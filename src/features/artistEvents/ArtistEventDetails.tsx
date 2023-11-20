@@ -17,7 +17,9 @@ export default function ArtistEventDetails({
   return (
     <div
       className='rounded-lg p-4 border mt-4'
-      onClick={() => onClickArtistEvent(artistEvent)}
+      onClick={() => {
+        onClickArtistEvent(artistEvent);
+      }}
     >
       <div className=' grid grid-cols-3'>
         <div className='col-span-2 flex ml-8'>
@@ -28,7 +30,9 @@ export default function ArtistEventDetails({
             className=' text-xl'
             color='green'
             size='2rem'
-            onClick={() => onClickAddToFavorite(artistEvent)}
+            onClick={() => {
+              onClickAddToFavorite(artistEvent);
+            }}
           />
         </div>
       </div>

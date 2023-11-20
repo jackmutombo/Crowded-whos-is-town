@@ -4,7 +4,7 @@ import { emptyTextFixer } from '../../utils/general';
 import ArtistSocialMedia from './ArtistSocialMedia';
 
 type Props = {
-  artist: Artist;
+  artist?: Artist;
 };
 
 export default function ArtistBand({ artist }: Props) {

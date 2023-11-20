@@ -13,7 +13,7 @@ import { SocialMedia } from '../../models/socialMedia';
 import { Artist } from '../../models/artist';
 
 type Props = {
-  artist: Artist;
+  artist?: Artist;
 };
 
 export default function ArtistSocialMedia({ artist }: Props) {

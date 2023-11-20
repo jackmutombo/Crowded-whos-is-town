@@ -8,8 +8,9 @@ type Props = {
   addEventToSessionStorage: (
     ev: ArtistEvent,
     currentFavEvents: ArtistEvent[],
-    setCurrentFavEvents: (eve:ArtistEvent[]) => void
+    setCurrentFavEvents: (eve: ArtistEvent[]) => void
   ) => void;
+  currentFavEvents: ArtistEvent[];
 };
 export const displayTitleEvent = (ev: ArtistEvent) => {
   if (ev.title.trim().length === 0) return ev.venue.name;
@@ -21,6 +22,7 @@ export default function ArtistEventList({
   setCurrentEvent,
   setStoredFavorite,
   addEventToSessionStorage,
+  currentFavEvents
 }: Props) {
   const onSelectEvent = (event: ArtistEvent) => {
     setCurrentEvent(event);
@@ -34,9 +36,9 @@ export default function ArtistEventList({
             key={e.id}
             title={displayTitleEvent(e)}
             onClickArtistEvent={onSelectEvent}
-            onClickAddToFavorite={() =>
-              addEventToSessionStorage(e, events, setStoredFavorite)
-            }
+            onClickAddToFavorite={(ev) => {
+              addEventToSessionStorage(ev, currentFavEvents, setStoredFavorite);
+            }}
             artistEvent={e}
           />
         ))}
