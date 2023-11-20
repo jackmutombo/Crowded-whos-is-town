@@ -19,6 +19,7 @@ import { Artist } from '../Models/artist';
 import { EventArtist } from '../Models/EventArtist';
 import { format } from 'date-fns';
 import agent from '../api/agent';
+import { logInfo } from '../utils/general';
 
 export interface IHomeProps {}
 
@@ -104,19 +105,14 @@ export default function Home() {
     setStoredArray(list);
   }, []);
   const fetchEvent = useCallback(
-    (value: string, time = 'all') => {
-      fetch(
-        `https://rest.bandsintown.com/artists/${value}/events?app_id=111&date=${time}`
-      )
-        .then(response => response.json())
-        .then(json => {
-          console.log({ json });
-          const newResults = { ...results, [value.toLowerCase()]: json };
+    async (value: string, time = 'all') => {
+        const fetchEvent = await agent.EventArtist.list(value);
+        logInfo({fetchEvent});
+        const newResults = { ...results, [value.toLowerCase()]: fetchEvent };
           setEvents(prev => {
             return { ...prev, ...newResults };
           });
-          setCurrentEvents(json);
-        });
+          setCurrentEvents(fetchEvent);
     },
     [results, setEvents, setCurrentEvents]
   );
@@ -137,21 +133,6 @@ export default function Home() {
         setCurrentEvents(event);
         return;
       }
-
-      // fetch(`https://rest.bandsintown.com/artists/${value}?app_id=111`)
-      //   .then(response => response.json())
-      //   .then(json => {
-      //     console.log({ json });
-      //     const count = json?.id?.length;
-      //     if (count > 0) {
-      //       const newResults = { ...results, [value.toLowerCase()]: json };
-      //       setResults(prev => {
-      //         return { ...prev, ...newResults };
-      //       });
-      //       setCurrentArtist(json);
-      //       fetchEvent(value);
-      //     }
-      //   });
       const fetchArtist = await agent.Artist.details(value);
       const count = fetchArtist?.id?.length;
       if (count > 0) {
