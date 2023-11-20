@@ -1,5 +1,5 @@
 const textConstants = {
-  EventArtist: {
+  artistEvent: {
     sessionKey: 'sessionKey',
   },
 };

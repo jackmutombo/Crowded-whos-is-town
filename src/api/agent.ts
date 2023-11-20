@@ -52,11 +52,11 @@ const Artist = {
     requests.get(`${name}?app_id=${BAND_IN_TOWN_API_KEY}`),
 };
 
-const EventArtist = {
+const ArtistEvent = {
   list: (name: string) =>
     requests.get(`${name}/events?app_id=${BAND_IN_TOWN_API_KEY}&date=all`),
 };
 
-const agent = { Artist, EventArtist };
+const agent = { Artist, ArtistEvent };
 
 export default agent;

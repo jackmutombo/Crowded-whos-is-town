@@ -15,8 +15,8 @@ import {
   FaYoutubeSquare,
 } from 'react-icons/fa';
 import { useCallback, useEffect, useState } from 'react';
-import { Artist } from '../Models/artist';
-import { EventArtist } from '../Models/EventArtist';
+import { Artist } from '../models/artist';
+import { ArtistEvent } from '../models/artistEvent';
 import { format } from 'date-fns';
 import agent from '../api/agent';
 import { logInfo } from '../utils/general';
@@ -27,8 +27,8 @@ type ArtistsObject = {
   [artistName: string]: Artist;
 };
 
-type EventArtistsObject = {
-  [artistName: string]: EventArtist[];
+type ArtistEventsObject = {
+  [artistName: string]: ArtistEvent[];
 };
 
 export const useDebounce = (value: string, delay = 500) => {
@@ -62,13 +62,13 @@ export default function Home() {
   const [query, setQuery] = useState<string>('');
   const debounceQuery = useDebounce(query);
   const [results, setResults] = useState<ArtistsObject>({});
-  const [events, setEvents] = useState<EventArtistsObject>({});
+  const [events, setEvents] = useState<ArtistEventsObject>({});
   const [currentArtist, setCurrentArtist] = useState<Artist>();
-  const [currentEvent, setCurrentEvent] = useState<EventArtist>();
-  const [currentEvents, setCurrentEvents] = useState<EventArtist[]>([]);
-  const [storedArray, setStoredArray] = useState<EventArtist[]>([]);
+  const [currentEvent, setCurrentEvent] = useState<ArtistEvent>();
+  const [currentEvents, setCurrentEvents] = useState<ArtistEvent[]>([]);
+  const [storedArray, setStoredArray] = useState<ArtistEvent[]>([]);
 
-  const addEventToSessionStorage = (event: EventArtist) => {
+  const addEventToSessionStorage = (event: ArtistEvent) => {
     // Check if the item already exists in the stored array
     const itemExists = storedArray.some(item => item.id === event.id);
 
@@ -86,13 +86,13 @@ export default function Home() {
       updateSessionStorage(updatedArray);
     }
   };
-  const updateSessionStorage = (updatedArray: EventArtist[]) => {
+  const updateSessionStorage = (updatedArray: ArtistEvent[]) => {
     const updatedArrayAsString = JSON.stringify(updatedArray);
     sessionStorage.setItem(sessionKey, updatedArrayAsString);
     setStoredArray(updatedArray);
   };
 
-  const getListFromSessionStorage = (): EventArtist[] => {
+  const getListFromSessionStorage = (): ArtistEvent[] => {
     const arrayAsString = sessionStorage.getItem(sessionKey);
     if (arrayAsString === null) return [];
     const arrayFromStorage = JSON.parse(arrayAsString) || [];
@@ -106,13 +106,13 @@ export default function Home() {
   }, []);
   const fetchEvent = useCallback(
     async (value: string, time = 'all') => {
-        const fetchEvent = await agent.EventArtist.list(value);
-        logInfo({fetchEvent});
-        const newResults = { ...results, [value.toLowerCase()]: fetchEvent };
-          setEvents(prev => {
-            return { ...prev, ...newResults };
-          });
-          setCurrentEvents(fetchEvent);
+      const fetchEvent = await agent.ArtistEvent.list(value);
+      logInfo({ fetchEvent });
+      const newResults = { ...results, [value.toLowerCase()]: fetchEvent };
+      setEvents(prev => {
+        return { ...prev, ...newResults };
+      });
+      setCurrentEvents(fetchEvent);
     },
     [results, setEvents, setCurrentEvents]
   );
@@ -175,11 +175,11 @@ export default function Home() {
     if (link) return link.url;
   }
 
-  const displayTitleEvent = (ev: EventArtist) => {
+  const displayTitleEvent = (ev: ArtistEvent) => {
     if (ev.title.trim().length === 0) return ev.venue.name;
     return ev.title;
   };
-  const onSelectEvent = (event: EventArtist) => {
+  const onSelectEvent = (event: ArtistEvent) => {
     setCurrentEvent(event);
   };
 

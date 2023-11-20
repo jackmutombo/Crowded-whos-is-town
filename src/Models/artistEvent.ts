@@ -1,6 +1,6 @@
 import { Artist } from './artist';
 
-export interface EventArtist {
+export interface ArtistEvent {
   id: string;
   url: string;
   datetime: string;
@@ -9,7 +9,7 @@ export interface EventArtist {
   artist?: Artist;
   venue: Venue;
   lineup: string[];
-  offers: Offer[];
+  offers: any[];
   artist_id: string;
   on_sale_datetime: string;
   festival_start_date: string;
@@ -35,10 +35,4 @@ export interface Venue {
   region: string;
   type?: string;
   timezone?: string;
-}
-
-export interface Offer {
-  type: string;
-  url: string;
-  status: string;
 }
