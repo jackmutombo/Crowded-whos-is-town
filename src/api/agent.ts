@@ -53,8 +53,8 @@ const Artist = {
 };
 
 const ArtistEvent = {
-  list: (name: string) =>
-    requests.get(`${name}/events?app_id=${BAND_IN_TOWN_API_KEY}&date=all`),
+  list: (name: string, date='all') =>
+    requests.get(`${name}/events?app_id=${BAND_IN_TOWN_API_KEY}&date=${date}`),
 };
 
 const agent = { Artist, ArtistEvent };

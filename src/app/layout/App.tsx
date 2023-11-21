@@ -44,7 +44,7 @@ export default function App() {
   }, [setStoredFavorite]);
 
   const fetchEvent = useCallback(
-    async (value: string, time = 'all') => {
+    async (value: string) => {
       const fetchEvent = await agent.ArtistEvent.list(value);
       logInfo(fetchEvent);
       const newResults = { ...results, [value.toLowerCase()]: fetchEvent };
